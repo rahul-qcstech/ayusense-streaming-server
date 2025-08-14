@@ -1,0 +1,13 @@
+{
+  "name": "ayusense-streaming-server",
+  "version": "1.0.0",
+  "description": "WebSocket server for real-time audio transcription.",
+  "main": "streaming-server.js",
+  "scripts": {
+    "start": "node streaming-server.js"
+  },
+  "dependencies": {
+    "@google-cloud/speech": "^6.5.0",
+    "ws": "^8.18.0"
+  }
+}
