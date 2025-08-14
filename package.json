@@ -4,7 +4,8 @@
   "description": "WebSocket server for real-time audio transcription.",
   "main": "streaming-server.js",
   "scripts": {
-    "start": "node streaming-server.js"
+    "start": "node streaming-server.js",
+    "build": "echo 'No build step required. Skipping.'"
   },
   "dependencies": {
     "@google-cloud/speech": "^6.5.0",
