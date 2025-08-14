@@ -38,24 +38,35 @@ wss.on('connection', (ws) => {
     })
     .on('error', (error) => {
       console.error('Google Speech-to-Text Error:', error);
+      // The stream is now destroyed. We should close the websocket.
+      if (ws.readyState === ws.OPEN) {
+        ws.close(1011, 'Google Speech-to-Text Error');
+      }
     })
     .on('data', (data) => {
-      const transcript = data.results[0]?.alternatives[0]?.transcript || '';
-      const isFinal = data.results[0]?.isFinal || false;
-      ws.send(JSON.stringify({ transcript, isFinal }));
+      if (ws.readyState === ws.OPEN) {
+        const transcript = data.results[0]?.alternatives[0]?.transcript || '';
+        const isFinal = data.results[0]?.isFinal || false;
+        ws.send(JSON.stringify({ transcript, isFinal }));
+      }
     });
 
   ws.on('message', (message) => {
-    recognizeStream.write(message);
+    // This is the crucial check.
+    if (recognizeStream.writable) {
+      recognizeStream.write(message);
+    }
   });
 
   ws.on('close', () => {
     console.log('Client disconnected');
+    // If the client disconnects, we need to make sure the stream is cleaned up.
+    // destroy() is the most robust way to ensure it's gone.
     recognizeStream.destroy();
   });
 
   ws.on('error', (error) => {
     console.error('WebSocket error:', error);
-    recognizeStream.destroy();
+    // The 'close' event will be fired next, which will handle cleanup.
   });
 });
