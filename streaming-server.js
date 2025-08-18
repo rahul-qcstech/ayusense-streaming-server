@@ -34,7 +34,6 @@ wss.on('connection', (ws) => {
         sampleRateHertz: 48000,
         languageCodes: ['en-US', 'hi-IN'],
         model: 'latest_long',
-        useEnhanced: true,
         enableAutomaticPunctuation: true,
       },
       interimResults: true,
