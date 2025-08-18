@@ -46,9 +46,14 @@ wss.on('connection', (ws) => {
     })
     .on('data', (data) => {
       if (ws.readyState === ws.OPEN) {
-        const transcript = data.results[0]?.alternatives[0]?.transcript || '';
-        const isFinal = data.results[0]?.isFinal || false;
-        ws.send(JSON.stringify({ transcript, isFinal }));
+        const result = data.results[0];
+        if (result) {
+          const transcript = result.alternatives[0]?.transcript || '';
+          const isFinal = result.isFinal || false;
+          // The API returns the detected language code in the result.
+          const languageCode = result.languageCode || '';
+          ws.send(JSON.stringify({ transcript, isFinal, languageCode }));
+        }
       }
     });
 
