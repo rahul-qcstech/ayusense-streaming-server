@@ -32,7 +32,7 @@ wss.on('connection', (ws) => {
       config: {
         encoding: 'WEBM_OPUS',
         sampleRateHertz: 48000,
-        languageCode: 'en-US',
+        languageCodes: ['en-US', 'hi-IN'],
         enableAutomaticPunctuation: true,
       },
       interimResults: true,
