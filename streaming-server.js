@@ -5,15 +5,19 @@ const { SpeechClient } = require('@google-cloud/speech');
 
 const wss = new WebSocketServer({ port: 8080 });
 
-// --- Google Cloud Authentication ---
-// The SpeechClient will automatically find and use the credentials
-// from the GOOGLE_APPLICATION_CREDENTIALS environment variable.
+// --- Robust Google Cloud Authentication ---
 let speechClient;
 try {
-  speechClient = new SpeechClient();
+  // Render secrets are loaded as environment variables.
+  // This code expects the raw JSON content in the variable.
+  const credentialsJson = process.env.GOOGLE_APPLICATION_CREDENTIALS;
+  if (!credentialsJson) {
+    throw new Error('The GOOGLE_APPLICATION_CREDENTIALS environment variable is not set.');
+  }
+  const credentials = JSON.parse(credentialsJson);
+  speechClient = new SpeechClient({ credentials });
 } catch (error) {
   console.error('FATAL: Failed to initialize Google Speech Client.', error);
-  console.error('Please ensure your GOOGLE_APPLICATION_CREDENTIALS environment variable is set correctly.');
   process.exit(1); // Exit the process if authentication fails
 }
 // --- End of Authentication Logic ---
