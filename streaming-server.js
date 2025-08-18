@@ -33,7 +33,7 @@ wss.on('connection', (ws) => {
         encoding: 'WEBM_OPUS',
         sampleRateHertz: 48000,
         languageCodes: ['en-US', 'hi-IN'],
-        model: 'telephony',
+        model: 'latest_long',
         useEnhanced: true,
         enableAutomaticPunctuation: true,
       },
