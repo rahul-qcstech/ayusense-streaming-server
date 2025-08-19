@@ -56,11 +56,20 @@ wss.on('connection', (ws) => {
     .on('error', (error) => {
       console.error('Google Speech-to-Text Error:', error);
     })
-    .on('data', (data) => {    
-      console.log('Data received from google: ', data);
-      if (ws.readyState === ws.OPEN) {
-        ws.send(JSON.stringify(data));
+    .on('data', (data) => {
+      // --- Start of New Debugging Code ---
+      console.log('Data received from Google:', JSON.stringify(data, null, 2));
+      // --- End of New Debugging Code ---
+
+      // --- Start of Robust Data Handling ---
+      // Google's API is inconsistent. Sometimes the result is the data object itself,
+      // and sometimes it's nested in data.results[0]. This handles both cases.
+      const result = data.results && data.results.length > 0 ? data.results[0] : data;
+
+      if (ws.readyState === ws.OPEN && result && result.alternatives && result.alternatives.length > 0) {
+        ws.send(JSON.stringify(result));
       }
+      // --- End of Robust Data Handling ---
     });
 
   ws.on('message', (message) => {
