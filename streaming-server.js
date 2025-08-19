@@ -48,8 +48,7 @@ wss.on('connection', (ws) => {
       config: {
         encoding: 'WEBM_OPUS',
         sampleRateHertz: 48000,
-        languageCode: 'en-US', 
-        alternativeLanguageCodes: ['hi-IN'],
+        languageCode: 'en-US', // Reverted to simplest config for debugging
         enableAutomaticPunctuation: true,
       },
       interimResults: true,
@@ -57,20 +56,14 @@ wss.on('connection', (ws) => {
     .on('error', (error) => {
       console.error('Google Speech-to-Text Error:', error);
     })
-    .on('data', (data) => {
+    .on('data', (data) => {    
+      console.log('Data received from google: ', data.results[0]);
       if (ws.readyState === ws.OPEN) {
         ws.send(JSON.stringify(data.results[0]));
       }
     });
 
   ws.on('message', (message) => {
-    // --- Start of New Debugging Code ---
-    console.log(`Received audio chunk of size: ${message.length}`);
-    console.log(`Received audio chunk: ${message}`);
-
-    // --- End of New Debugging Code ---
-    const flushed = recognizeStream.write(message);                         
-    console.log(`Wrote to stream. Is buffer flushed?  ${flushed}`);  
     recognizeStream.write(message);
   });
 
