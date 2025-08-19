@@ -57,9 +57,9 @@ wss.on('connection', (ws) => {
       console.error('Google Speech-to-Text Error:', error);
     })
     .on('data', (data) => {    
-      console.log('Data received from google: ', data.results[0]);
+      console.log('Data received from google: ', data);
       if (ws.readyState === ws.OPEN) {
-        ws.send(JSON.stringify(data.results[0]));
+        ws.send(JSON.stringify(data));
       }
     });
 
