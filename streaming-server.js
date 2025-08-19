@@ -37,15 +37,14 @@ wss.on('connection', (ws) => {
 
   ws.on('message', (message) => {
     if (!recognizeStream) {
-      // First message received, now create the stream to Google.
-      console.log('Initializing Google Speech stream');
+      console.log('Attempting to create Google Speech stream...');
       recognizeStream = speechClient
         .streamingRecognize({
           config: {
             encoding: 'WEBM_OPUS',
             sampleRateHertz: 48000,
             languageCode: 'en-US',
-            alternativeLanguageCodes: ['hi-In'],
+            alternativeLanguageCodes: ['hi-IN'],
             model: 'latest_long',
             enableAutomaticPunctuation: true,
           },
@@ -68,11 +67,15 @@ wss.on('connection', (ws) => {
             }
           }
         });
+      console.log('Google Speech stream created.');
     }
 
-    // Forward the audio data to Google.
+    console.log(`Writing message of size ${message.length} to stream.`);
     if (recognizeStream.writable) {
       recognizeStream.write(message);
+      console.log('Message written to stream.');
+    } else {
+      console.log('Stream is not writable.');
     }
   });
 
