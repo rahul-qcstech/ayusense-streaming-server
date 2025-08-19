@@ -66,7 +66,11 @@ wss.on('connection', (ws) => {
   ws.on('message', (message) => {
     // --- Start of New Debugging Code ---
     console.log(`Received audio chunk of size: ${message.length}`);
+    console.log(`Received audio chunk: ${message}`);
+
     // --- End of New Debugging Code ---
+    const flushed = recognizeStream.write(message);                         
+    console.log(`Wrote to stream. Is buffer flushed?  ${flushed}`);  
     recognizeStream.write(message);
   });
 
