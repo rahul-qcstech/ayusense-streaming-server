@@ -57,8 +57,7 @@ wss.on('connection', (ws) => {
       console.error('Google Speech-to-Text Error:', error);
     })
     .on('data', (data) => {
-      // --- Start of New Debugging Code ---
-      console.log('Data received from Google:', JSON.stringify(data, null, 2));
+      // --- Start of New Debugging Code --
       console.log('Results received from Google:', JSON.stringify(data.results[0], null, 2));
 
       // --- End of New Debugging Code ---
@@ -70,7 +69,7 @@ wss.on('connection', (ws) => {
       console.log('Alternatives:', result.alternatives);
 
       if (ws.readyState === ws.OPEN && result && result.alternatives && result.alternatives.length > 0) {
-        ws.send(JSON.stringify(result.alternatives));
+        ws.send(JSON.stringify(result.alternatives[0]));
       }
       // --- End of Robust Data Handling ---
     });
