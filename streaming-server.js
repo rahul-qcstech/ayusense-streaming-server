@@ -69,7 +69,7 @@ wss.on('connection', (ws) => {
       console.log('Alternatives:', result.alternatives);
 
       if (ws.readyState === ws.OPEN && result && result.alternatives && result.alternatives.length > 0) {
-        ws.send(JSON.stringify(result.alternatives[0]));
+        ws.send(JSON.stringify(result));
       }
       // --- End of Robust Data Handling ---
     });
