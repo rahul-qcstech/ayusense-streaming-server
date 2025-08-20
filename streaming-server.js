@@ -49,6 +49,7 @@ wss.on('connection', (ws) => {
         encoding: 'WEBM_OPUS',
         sampleRateHertz: 48000,
         languageCode: 'en-US', // Reverted to simplest config for debugging
+        alternativeLanguageCodes: ['hi-IN', 'kn-IN', 'mr-IN', 'te-IN', 'ta-IN'], 
         enableAutomaticPunctuation: true,
       },
       interimResults: true,
